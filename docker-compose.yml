@@ -1,0 +1,84 @@
+version: '2'
+
+services:
+    bc.masternode:
+        image: kunstmaan/master-multichain
+        container_name: bc.masternode
+        stdin_open: true
+        tty: true
+        ports:
+            - "7447:7447"
+            - "8000:8000"
+        expose:
+            - 7447
+            - 8000
+        environment:
+            CHAINNAME: MyChain
+            NETWORK_PORT: 7447
+            RPC_PORT: 8000
+            RPC_USER: multichainrpc
+            RPC_PASSWORD: this-is-insecure-change-it
+            RPC_ALLOW_IP: 0.0.0.0/0.0.0.0
+            PARAM_ANYONE_CAN_RECEIVE: anyone-can-receive|true
+            PARAM_ANYONE_CAN_SEND: anyone-can-send|true
+            PARAM_ANYONE_CAN_ISSUE: anyone-can-issue|true
+            PARAM_ANYONE_CAN_CONNECT: anyone-can-connect|true
+            PARAM_ANYONE_CAN_MINE: anyone-can-mine|true
+
+    bc.slavenode:
+        image: kunstmaan/node-multichain
+        container_name: bc.slavenode
+        stdin_open: true
+        tty: true
+        expose:
+            - 7447
+            - 8000
+        environment:
+            CHAINNAME: MyChain
+            NETWORK_PORT: 7447
+            RPC_PORT: 8000
+            RPC_USER: multichainrpc
+            RPC_PASSWORD: this-is-insecure-change-it
+            RPC_ALLOW_IP: 0.0.0.0/0.0.0.0
+            MASTER_NODE: bc.masternode
+        links:
+            - bc.masternode
+
+    bc.explorernode:
+        image: kunstmaan/explorer-multichain
+        container_name: bc.explorernode
+        stdin_open: true
+        tty: true
+        ports:
+            - "2750:2750"
+        expose:
+            - 2750
+            - 7447
+            - 8000
+        environment:
+            CHAINNAME: MyChain
+            NETWORK_PORT: 7447
+            RPC_PORT: 8000
+            RPC_USER: multichainrpc
+            RPC_PASSWORD: this-is-insecure-change-it
+            RPC_ALLOW_IP: 0.0.0.0/0.0.0.0
+            MASTER_NODE: bc.masternode
+        links:
+            - bc.masternode
+
+    bc.php:
+        image: sadokf/php7-nginx-supervisord
+        container_name: bc.php
+        volumes:
+          - ./:/var/www
+
+    bc.mysql:
+        image: mysql
+        container_name: bc.mysql
+        ports:
+            - "3300:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: r00t
+            MYSQL_DATABASE: blockchain
+            MYSQL_USER: blockchain
+            MYSQL_PASSWORD: blockchain
