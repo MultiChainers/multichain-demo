@@ -1,5 +1,5 @@
 {
-    "name": "kunstmaan/multichain-cli",
+    "name": "sadok-f/multichain-demo",
     "type": "application",
     "description": "Demo CLI commands to demonstrate Multichain",
     "license": "MIT",
@@ -7,6 +7,10 @@
         {
             "name": "Roderik van der Veer",
             "email": "roderik.van.der.veer@kunstmaan.be"
+        },
+        {
+            "name": "Sadok Ferjani",
+            "email": "sadoknet@gmail.com"
         }
     ],
     "require": {
