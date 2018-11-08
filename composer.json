@@ -18,7 +18,8 @@
         "symfony/console": "^3.0",
         "kunstmaan/libphp-multichain": "1.1.0",
         "doctrine/orm": "^2.5",
-        "symfony/yaml": "^3.0"
+        "symfony/yaml": "^3.0",
+        "fguillot/json-rpc": "1.2.7"
     },
     "autoload": {
         "psr-4": {
